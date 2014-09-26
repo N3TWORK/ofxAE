@@ -42,30 +42,33 @@ LayerType : {
 
 getLayerType : function(layer)
 {
-	if(!layer.source.useProxy && layer.source instanceof CompItem) {
-		return this.LayerType.COMPOSITION;
-	}
-	var s = layer.source.useProxy ? layer.source.proxySource : layer.source.mainSource;
-	if(s) {
-		if(s instanceof FileSource) {
-			if(s.isStill) {
-				return this.LayerType.IMAGE;
-			}
-			else  {
-				if(s.conformFrameRate === s.nativeFrameRate) {
-					return this.LayerType.SEQUENCE;
+	if(layer.source) {
+		if(!layer.source.useProxy && layer.source instanceof CompItem) {
+			return this.LayerType.COMPOSITION;
+		}
+		var s = layer.source.useProxy ? layer.source.proxySource : layer.source.mainSource;
+		if(s) {
+			if(s instanceof FileSource) {
+				if(s.isStill) {
+					return this.LayerType.IMAGE;
 				}
-				else {
-					return this.LayerType.MOVIE;
+				else  {
+					if(s.conformFrameRate === s.nativeFrameRate) {
+						return this.LayerType.SEQUENCE;
+					}
+					else {
+						return this.LayerType.MOVIE;
+					}
 				}
 			}
+			else if(s instanceof SolidSource) {
+				return this.LayerType.SOLID;
+			}
+			else if(s instanceof PlaceHolderSource) {
+				return this.LayerType.PLACEHOLDER;
+			}
 		}
-		else if(s instanceof SolidSource) {
-			return this.LayerType.SOLID;
-		}
-		else if(s instanceof PlaceHolderSource) {
-			return this.LayerType.PLACEHOLDER;
-		}
+		// otherwise, unknown type
 	}
 	else {
 		var l = layer;
