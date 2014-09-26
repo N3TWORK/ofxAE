@@ -20,6 +20,7 @@ public:
 	const ofVec2f& getSize() { return size_; }
 	bool is3D() { return is_3d_; }
 	bool isCollapse() { return is_collapse_; }
+	bool isText() {return is_text_; }
 	void addMask(Mask *mask);
 	ofBlendMode getBlendMode() { return blend_mode_; }
 	
@@ -29,6 +30,7 @@ public:
 protected:
 	bool is_3d_;
 	bool is_collapse_;
+	bool is_text_;
 	ofBlendMode blend_mode_;
 	ofVec2f size_;
 	vector<Mask*> mask_;

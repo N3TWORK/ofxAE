@@ -174,6 +174,72 @@ void Loader::setupCompositionJson(Composition& comp, const Json::Value& json)
 				comp.av_.push_back(ll);
 				l = ll;
 			}
+			else if(type_name == "text") {
+				ofLog(OF_LOG_WARNING, "json deserialize: text layer "+type_name);
+				AVLayer *ll = new AVLayer();
+				ll->is_text_ = true;
+				allocated_.layer.push_back(ll);
+				setupAVLayerJson(*ll, layer);
+				ShapeCap *cap = new ShapeCap(ll);
+				allocated_.cap.push_back(cap);
+//				setupShapeJson(cap, layer);
+				
+				// <TODO> text drawing
+				// for now, put a rectangle here
+				{
+					const Json::Value& properties = layer.get("property", Json::Value::null);
+					ShapeContentRect *target = new ShapeContentRect();
+					allocated_.property.push_back(target);
+					{
+						Property<ofVec2f> *prop = new Property<ofVec2f>("position");
+						allocated_.property.push_back(prop);
+						setupPropertyKeysJson(*prop, properties.get("Position", Json::Value::null));
+						target->addPositionProperty(prop);
+					}
+					{
+						Property<ofVec2f> *prop = new Property<ofVec2f>("size");
+						allocated_.property.push_back(prop);
+						ofVec2f value = ofVec2f(64.0, 64.0);
+						prop->addKey(0, value);
+						target->addSizeProperty(prop);
+					}
+					{
+						Property<float> *prop = new Property<float>("roundness");
+						allocated_.property.push_back(prop);
+						float value = 0.0;
+						prop->addKey(0, value);
+						target->addRoundnessProperty(prop);
+					}
+					cap->addContent(target);
+				}
+				{
+					ShapeContentFill *target = new ShapeContentFill();
+					allocated_.property.push_back(target);
+					{
+						Property<ofFloatColor> *prop = new Property<ofFloatColor>("color");
+						allocated_.property.push_back(prop);
+						ofFloatColor value = ofFloatColor(1.0, 0.0, 1.0);
+						prop->addKey(0, value);
+						target->addColorProperty(prop);
+					}
+					{
+						Property<float> *prop = new Property<float>("opacity");
+						allocated_.property.push_back(prop);
+						float value = 1.0;
+						prop->addKey(0, value);
+						target->addOpacityProperty(prop);
+					}
+					cap->addContent(target);
+				}
+				// </TODO>
+				
+				comp.av_.push_back(ll);
+				l = ll;
+			}
+			else {
+				// unsupported type
+				ofLog(OF_LOG_WARNING, "json deserialize: unknown type "+type_name);
+			}
 			if(!l) {
 				continue;
 			}
