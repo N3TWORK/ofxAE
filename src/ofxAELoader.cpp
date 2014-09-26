@@ -52,8 +52,7 @@ void Loader::setBasePath(const string &base_path)
 }
 Composition* Loader::loadComposition(const string& filepath)
 {
-	Composition *comp = new Composition();
-	allocated_.comp.push_back(comp);
+	Composition *comp = NULL;
 	string ext = ofFilePath::getFileExt(filepath);
 	if(ext == "json") {
 		ofxJSONElement json;
@@ -61,11 +60,16 @@ Composition* Loader::loadComposition(const string& filepath)
 			file_cache_.insert(pair<string,string>(base_path_+filepath,ofBufferFromFile(base_path_+filepath).getText()));
 		}
 		if(json.parse(file_cache_[base_path_+filepath])) {
+			comp = new Composition();
+			allocated_.comp.push_back(comp);
 			setupCompositionJson(*comp, json);
 		}
 		else {
 			ofLog(OF_LOG_WARNING, "couldn't open json file: "+base_path_+filepath);
 		}
+	}
+	else {
+		ofLog(OF_LOG_WARNING, "file must be .json: " + base_path_ + filepath);
 	}
 	return comp;
 }
