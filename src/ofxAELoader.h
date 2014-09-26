@@ -33,6 +33,13 @@ public:
 	Composition* getComposition(int index);
 	
 	void loadComposition(Composition& comp, const string& filepath);	// will be deleted on next update
+	
+	
+	// HACK
+	const string& getMainImagePath() { return mainImagePath_; }
+	void setMainImagePath(const string& imagePath) { mainImagePath_ = imagePath; };
+	// HACK
+	
 private:
 	void setupCompositionJson(Composition& comp, const Json::Value& json);
 	void setupLayerJson(Layer& layer, const Json::Value& json);
@@ -66,6 +73,10 @@ private:
 		vector<PropertyBase*> property;
 		vector<Marker*> marker;
 	} allocated_;
+	
+	// HACK
+	string mainImagePath_;
+	// HACK
 };
 
 OFX_AE_NAMESPACE_END
