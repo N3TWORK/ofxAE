@@ -21,9 +21,9 @@ void AVLayer::allocate(int width, int height)
 void AVLayer::draw(float alpha)
 {
 	getNode().pushMatrix();
-	if(isText()) {
-		ofLog(OF_LOG_WARNING, "drawing text "+this->getName());
-	}
+	// if(isText()) {
+		// ofLog(OF_LOG_WARNING, "drawing text "+this->getName());
+	// }
 	if(!mask_.empty()) {
 		ofx_mask_.beginMask();
 		if(mask_.empty()) {

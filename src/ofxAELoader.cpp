@@ -175,7 +175,6 @@ void Loader::setupCompositionJson(Composition& comp, const Json::Value& json)
 				l = ll;
 			}
 			else if(type_name == "text") {
-				ofLog(OF_LOG_WARNING, "json deserialize: text layer "+type_name);
 				AVLayer *ll = new AVLayer();
 				ll->is_text_ = true;
 				allocated_.layer.push_back(ll);
