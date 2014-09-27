@@ -3,6 +3,8 @@
 #include "ofGraphics.h"
 #include "ofxAEMask.h"
 
+#include <ofTrueTypeFont.h>
+
 OFX_AE_NAMESPACE_BEGIN
 
 AVLayer::AVLayer()
@@ -11,6 +13,13 @@ AVLayer::AVLayer()
 ,is_collapse_(false)
 ,is_text_(false)
 {
+	font_ = new ofTrueTypeFont;
+	font_->loadFont("avenir", 40);
+}
+
+AVLayer::~AVLayer()
+{
+	delete font_;
 }
 
 void AVLayer::allocate(int width, int height)
@@ -18,12 +27,23 @@ void AVLayer::allocate(int width, int height)
 	size_.set(width, height);
 }
 
+void AVLayer::drawTextInLayer() {
+	if(layerName_ == "HeadlineText") {
+		font_->drawString("Headline text goes here", 0, 0);
+	}
+	else if(layerName_ == "VerticalText") {
+		font_->drawString("Vertical text goes here", 0, 0);
+	}
+	else if(layerName_ == "BubbleText1" || layerName_ == "BubbleText2") {
+		font_->drawString("Multi-line text goes into\nthis thought bubble\nhere.", 0, 0);
+	}
+	else if(layerName_ == "urlText")
+		font_->drawString("http://www.n3twork.com", -400, 0);
+}
+
 void AVLayer::draw(float alpha)
 {
 	getNode().pushMatrix();
-	// if(isText()) {
-		// ofLog(OF_LOG_WARNING, "drawing text "+this->getName());
-	// }
 	if(!mask_.empty()) {
 		ofx_mask_.beginMask();
 		if(mask_.empty()) {
@@ -40,16 +60,25 @@ void AVLayer::draw(float alpha)
 			}
 		}
 		ofx_mask_.endMask();
-		ofx_mask_.begin();
-		if(cap_) {
-			cap_->draw(alpha*opacity_);
+		if(isText()) {
+			ofx_mask_.draw();
+			drawTextInLayer();
 		}
-		ofx_mask_.end();
-		ofx_mask_.draw();
+		else if(cap_){
+			ofx_mask_.begin();
+			cap_->draw(alpha*opacity_);
+			ofx_mask_.end();
+			ofx_mask_.draw();
+		}
 	}
 	else {
 		if(cap_) {
-			cap_->draw(alpha*opacity_);
+			if(isText()) {
+				drawTextInLayer();
+			}
+			else {
+				cap_->draw(alpha*opacity_);
+			}
 		}
 	}
 	getNode().popMatrix();

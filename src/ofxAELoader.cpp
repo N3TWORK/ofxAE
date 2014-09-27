@@ -181,6 +181,7 @@ void Loader::setupCompositionJson(Composition& comp, const Json::Value& json)
 			else if(type_name == "text") {
 				AVLayer *ll = new AVLayer();
 				ll->is_text_ = true;
+				ll->setName(layer.get("name", "noname").asString());
 				allocated_.layer.push_back(ll);
 				setupAVLayerJson(*ll, layer);
 				ShapeCap *cap = new ShapeCap(ll);
@@ -215,25 +216,25 @@ void Loader::setupCompositionJson(Composition& comp, const Json::Value& json)
 					}
 					cap->addContent(target);
 				}
-				{
-					ShapeContentFill *target = new ShapeContentFill();
-					allocated_.property.push_back(target);
-					{
-						Property<ofFloatColor> *prop = new Property<ofFloatColor>("color");
-						allocated_.property.push_back(prop);
-						ofFloatColor value = ofFloatColor(1.0, 0.0, 1.0);
-						prop->addKey(0, value);
-						target->addColorProperty(prop);
-					}
-					{
-						Property<float> *prop = new Property<float>("opacity");
-						allocated_.property.push_back(prop);
-						float value = 1.0;
-						prop->addKey(0, value);
-						target->addOpacityProperty(prop);
-					}
-					cap->addContent(target);
-				}
+//				{
+//					ShapeContentFill *target = new ShapeContentFill();
+//					allocated_.property.push_back(target);
+//					{
+//						Property<ofFloatColor> *prop = new Property<ofFloatColor>("color");
+//						allocated_.property.push_back(prop);
+//						ofFloatColor value = ofFloatColor(1.0, 0.0, 1.0);
+//						prop->addKey(0, value);
+//						target->addColorProperty(prop);
+//					}
+//					{
+//						Property<float> *prop = new Property<float>("opacity");
+//						allocated_.property.push_back(prop);
+//						float value = 1.0;
+//						prop->addKey(0, value);
+//						target->addOpacityProperty(prop);
+//					}
+//					cap->addContent(target);
+//				}
 				// </TODO>
 				
 				comp.av_.push_back(ll);

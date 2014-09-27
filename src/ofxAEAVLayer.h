@@ -4,6 +4,7 @@
 #include "ofxAELayer.h"
 #include "ofxMask.h"
 
+class ofTrueTypeFont;
 OFX_AE_NAMESPACE_BEGIN
 
 class Mask;
@@ -13,6 +14,7 @@ class AVLayer : public Layer {
 	friend class Loader;
 public:
 	AVLayer();
+	~AVLayer();
 	void allocate(int width, int height);
 	void draw(float alpha=1);
 	float getWidth() { return size_.x; }
@@ -27,14 +29,23 @@ public:
 	bool isHit(float x, float y);
 	bool isHit(const ofVec3f &point);
 
+	void setName(const string& name) { layerName_ = name; }
+	const string& getName() const { return layerName_; }
+	
 protected:
 	bool is_3d_;
 	bool is_collapse_;
-	bool is_text_;
 	ofBlendMode blend_mode_;
 	ofVec2f size_;
 	vector<Mask*> mask_;
 	ofxMask ofx_mask_;
+	
+	bool is_text_;
+	ofTrueTypeFont* font_;
+	string layerName_;
+	
+private:
+	void drawTextInLayer();
 };
 
 OFX_AE_NAMESPACE_END
