@@ -32,6 +32,9 @@ public:
 	void setName(const string& name) { layerName_ = name; }
 	const string& getName() const { return layerName_; }
 	
+	void setText(const string& text) { text_ = text; }
+	const string& getText() const { return text_; }
+	
 protected:
 	bool is_3d_;
 	bool is_collapse_;
@@ -40,9 +43,11 @@ protected:
 	vector<Mask*> mask_;
 	ofxMask ofx_mask_;
 	
+	// Text (TODO: create a TextLayer class)
 	bool is_text_;
 	ofTrueTypeFont* font_;
 	string layerName_;
+	string text_;
 	
 private:
 	void drawTextInLayer();

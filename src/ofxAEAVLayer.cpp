@@ -28,7 +28,10 @@ void AVLayer::allocate(int width, int height)
 }
 
 void AVLayer::drawTextInLayer() {
-	if(layerName_ == "HeadlineText") {
+	if(text_.size()) {
+		font_->drawString(text_, -100, 0);
+	}
+	else if(layerName_ == "HeadlineText") {
 		font_->drawString("Headline text goes here", 0, 0);
 	}
 	else if(layerName_ == "VerticalText") {
@@ -37,8 +40,9 @@ void AVLayer::drawTextInLayer() {
 	else if(layerName_ == "BubbleText1" || layerName_ == "BubbleText2") {
 		font_->drawString("Multi-line text goes into\nthis thought bubble\nhere.", 0, 0);
 	}
-	else if(layerName_ == "urlText")
+	else if(layerName_ == "urlText") {
 		font_->drawString("http://www.n3twork.com", -400, 0);
+	}
 }
 
 void AVLayer::draw(float alpha)
