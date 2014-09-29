@@ -14,6 +14,7 @@ public:
 	virtual void update(){}
 	virtual void draw(float alpha=1){}
 	virtual void setActive(bool active){}
+	virtual string capTypeName() { return "LayerCap"; }
 protected:
 	Layer *layer_;
 };

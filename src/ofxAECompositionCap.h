@@ -14,6 +14,7 @@ public:
 	Composition& getComposition() { return composition_; }
 	void update();
 	void draw(float alpha=1);
+	virtual string capTypeName() { return "CompositionCap"; }
 private:
 	Composition composition_;
 	ofFbo fbo_;

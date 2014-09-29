@@ -12,6 +12,8 @@ public:
 	ImageCap(AVLayer *layer);
 	void loadImage(const string& filepath);
 	void draw(float alpha=1);
+	virtual string capTypeName() { return "ImageCap"; }
+
 private:
 	ofTexture texture_;
 };
