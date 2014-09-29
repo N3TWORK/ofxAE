@@ -384,16 +384,8 @@ void Loader::setupImageJson(ImageCap *cap, const Json::Value& json)
 	const Json::Value& source_dir = json.get("sourceDirectory", Json::Value::null);
 	const Json::Value& source = json.get("source", Json::Value::null);
 	
-	// HACK; replace main image
-	if(!mainImagePath_.empty()) {
-		cap->loadImage(mainImagePath_);
-	}
-	else
-	// HACK
-	{
-		if(!source.isNull()) {
-			cap->loadImage(base_path_+(source_dir.isNull()?"":source_dir.asString())+source.asString());
-		}
+	if(!source.isNull()) {
+		cap->loadImage(base_path_+(source_dir.isNull()?"":source_dir.asString())+source.asString());
 	}
 }
 void Loader::setupMovieJson(MovieCap *cap, const Json::Value& json)
